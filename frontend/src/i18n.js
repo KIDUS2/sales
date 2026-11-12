@@ -1,5 +1,6 @@
 export const T = {
-  Products: 'ምርቶች', Reports: 'ሪፖርት', Users: 'ተጠቃሚዎች',
+  Dashboard: 'ዳሽቦርድ', 'Net profit': 'የተጣራ ትርፍ', Yesterday: 'ትናንት', 'Last 7 days': 'ያለፉት 7 ቀናት', 'Last 30 days': 'ያለፉት 30 ቀናት', 'This month': 'ይህ ወር', 'Pick dates': 'ቀን ምረጥ', 'Sales made': 'የተሸጡ ብዛት',
+  Products: 'ምርቶች', Users: 'ተጠቃሚዎች',
   'Good morning': 'እንደምን አደሩ', 'Good afternoon': 'እንደምን ዋሉ', 'Good evening': 'እንደምን አመሹ', 'New sale': 'አዲስ ሽያጭ', 'Collect payment': 'ክፍያ ሰብስብ',
   Today: 'ዛሬ', Sell: 'ሽያጭ', Customers: 'ደንበኞች', Stock: 'ክምችት', Expenses: 'ወጪ',
   'Net profit today': 'የዛሬ የተጣራ ትርፍ', 'after all expenses': 'ከሁሉም ወጪ በኋላ', 'Cash received': 'የተቀበልኩት ብር', 'On credit': 'በዱቤ',

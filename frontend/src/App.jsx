@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { LayoutDashboard, ShoppingCart, Users, Package, Receipt, RefreshCw, Languages, Sun, Moon, BarChart3, UserCog } from 'lucide-react'
+import { LayoutDashboard, ShoppingCart, Users, Package, Receipt, RefreshCw, Languages, Sun, Moon, UserCog } from 'lucide-react'
 import { useStore } from './store.jsx'
 import { ethDate } from './util.js'
 import Logo from './components/Logo.jsx'
@@ -8,13 +8,12 @@ import Sell from './pages/Sell.jsx'
 import Customers from './pages/Customers.jsx'
 import Stock from './pages/Stock.jsx'
 import Expenses from './pages/Expenses.jsx'
-import Reports from './pages/Reports.jsx'
 import UsersPage from './pages/Users.jsx'
 
-const PAGES = [['Today', LayoutDashboard, Dashboard], ['Sell', ShoppingCart, Sell], ['Customers', Users, Customers], ['Products', Package, Stock], ['Expenses', Receipt, Expenses], ['Reports', BarChart3, Reports], ['Users', UserCog, UsersPage]]
+const PAGES = [['Dashboard', LayoutDashboard, Dashboard], ['Sell', ShoppingCart, Sell], ['Customers', Users, Customers], ['Products', Package, Stock], ['Expenses', Receipt, Expenses], ['Users', UserCog, UsersPage]]
 
 export default function App() {
-  const [page, setPage] = useState('Today')
+  const [page, setPage] = useState('Dashboard')
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'))
   useEffect(() => { document.documentElement.dataset.theme = theme; localStorage.setItem('theme', theme) }, [theme])
   const { t, online, manual, setManual, queue, sync, lang, setLang, toastMsg } = useStore()
