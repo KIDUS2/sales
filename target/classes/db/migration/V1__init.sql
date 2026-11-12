@@ -1,0 +1,23 @@
+CREATE TABLE products(
+  id BIGSERIAL PRIMARY KEY, name TEXT NOT NULL, unit TEXT DEFAULT 'pcs',
+  selling_price NUMERIC(12,2) NOT NULL, avg_cost NUMERIC(12,2) NOT NULL DEFAULT 0,
+  stock_qty NUMERIC(12,2) NOT NULL DEFAULT 0, active BOOLEAN DEFAULT TRUE);
+CREATE TABLE customers(
+  id BIGSERIAL PRIMARY KEY, name TEXT NOT NULL, phone TEXT, credit_limit NUMERIC(12,2) DEFAULT 0);
+CREATE TABLE sales(
+  id BIGSERIAL PRIMARY KEY, client_id TEXT UNIQUE NOT NULL, customer_id BIGINT REFERENCES customers(id),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(), discount NUMERIC(12,2) DEFAULT 0,
+  total NUMERIC(12,2) NOT NULL, paid_amount NUMERIC(12,2) NOT NULL DEFAULT 0,
+  status TEXT NOT NULL DEFAULT 'CREDIT', void_reason TEXT);
+CREATE TABLE sale_items(
+  id BIGSERIAL PRIMARY KEY, sale_id BIGINT NOT NULL REFERENCES sales(id),
+  product_id BIGINT NOT NULL REFERENCES products(id), qty NUMERIC(12,2) NOT NULL,
+  unit_price NUMERIC(12,2) NOT NULL, unit_cost NUMERIC(12,2) NOT NULL);
+CREATE TABLE payments(
+  id BIGSERIAL PRIMARY KEY, client_id TEXT UNIQUE NOT NULL, customer_id BIGINT REFERENCES customers(id),
+  sale_id BIGINT REFERENCES sales(id), amount NUMERIC(12,2) NOT NULL, method TEXT DEFAULT 'CASH',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now());
+CREATE TABLE expenses(
+  id BIGSERIAL PRIMARY KEY, client_id TEXT UNIQUE NOT NULL, category TEXT NOT NULL,
+  amount NUMERIC(12,2) NOT NULL, note TEXT, created_at TIMESTAMPTZ NOT NULL DEFAULT now());
+CREATE INDEX ON sales(created_at); CREATE INDEX ON payments(created_at); CREATE INDEX ON expenses(created_at);

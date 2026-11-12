@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="4670e45c-90dd-4be9-9d74-242a77e3037d" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/KIDUS2/sales.git",
+    "accountId": "11c35eee-4548-4b61-b48f-863bc625bd41"
+  }
+}]]></component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.4402427982562929" />
+      <entry key="MS500" value="2.9601249590880063" />
+      <entry key="S2" value="5.2368898901142185" />
+      <entry key="S5" value="6.1945088274711555" />
+      <entry key="S10" value="6.7018628154538495" />
+      <entry key="S30" value="10.325084883589808" />
+      <entry key="S60" value="15.871261694334917" />
+      <entry key="M2" value="21.546037098368547" />
+      <entry key="M5" value="26.627531060100143" />
+      <entry key="M10" value="28.70085732380859" />
+      <entry key="M15" value="29.441052051809645" />
+      <entry key="M30" value="30.25082445925854" />
+      <entry key="H1" value="31.52639254281992" />
+      <entry key="H2" value="35.0911611394785" />
+      <entry key="H4" value="40.158119220659046" />
+      <entry key="D1" value="49.87222130682978" />
+      <entry key="W1" value="55.45641412475096" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="4.2030456845294267E-286" />
+      <entry key="MS500" value="8.408389517310313E-58" />
+      <entry key="S2" value="5.384906979026018E-15" />
+      <entry key="S5" value="1.9609715016480774E-6" />
+      <entry key="S10" value="0.0014003469218904563" />
+      <entry key="S30" value="0.11187813386599664" />
+      <entry key="S60" value="0.33448188869652784" />
+      <entry key="M2" value="0.5783440919526436" />
+      <entry key="M5" value="0.8032939967570347" />
+      <entry key="M10" value="0.8962667164697933" />
+      <entry key="M15" value="0.9295967225083984" />
+      <entry key="M30" value="0.9667187981646038" />
+      <entry key="H1" value="1.0325708634103241" />
+      <entry key="H2" value="1.215988768173651" />
+      <entry key="H4" value="1.469866491806653" />
+      <entry key="D1" value="1.8823746784204678" />
+      <entry key="W1" value="1.982294131697952" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="1.4037852813823348" />
+      <entry key="MS500" value="2.939158434769717" />
+      <entry key="S2" value="5.224574120154606" />
+      <entry key="S5" value="6.1884142185077975" />
+      <entry key="S10" value="6.699538148731927" />
+      <entry key="S30" value="10.422363712629647" />
+      <entry key="S60" value="16.184148228152463" />
+      <entry key="M2" value="22.105496563517786" />
+      <entry key="M5" value="27.420230813684636" />
+      <entry key="M10" value="29.591192618503985" />
+      <entry key="M15" value="30.36654241960771" />
+      <entry key="M30" value="31.215408607697928" />
+      <entry key="H1" value="32.55785240785456" />
+      <entry key="H2" value="36.306546872107795" />
+      <entry key="H4" value="41.62765258094509" />
+      <entry key="D1" value="51.754531353548785" />
+      <entry key="W1" value="57.43869848240349" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="3LuMkDwm9ap1QxMRuYh9fGa48ZX" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Maven.sales [clean].executor": "Run",
+    "Maven.sales [install].executor": "Run",
+    "Maven.sales [validate].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "Spring Boot.SalesApplication.executor": "Run",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/kidus/Downloads/salesapp",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "MavenSettings"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="SalesApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="sales" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.shop.sales.SalesApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-34e2839f716b-intellij.indexing.shared.core-IU-262.9437.185" />
+        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-IU-262.9437.185" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4670e45c-90dd-4be9-9d74-242a77e3037d" name="Changes" comment="" />
+      <created>1794299640335</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1794299640335</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/shop/sales/enumuration/Role.java</url>
+          <line>4</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
