@@ -1,5 +1,6 @@
 package com.shop.sales.service;
 import com.shop.sales.dto.*;
+import com.shop.sales.exception.ApiException;
 import com.shop.sales.model.Product;
 import com.shop.sales.repository.ProductRepository;
 import com.shop.sales.util.Money;
@@ -27,5 +28,23 @@ public class ProductService {
     p.setAvgCost(Money.nz(r.costPerTray()).divide(BigDecimal.valueOf(ppt), 4, RoundingMode.HALF_UP));
     p.setStockQty(Money.nz(r.trays()).multiply(BigDecimal.valueOf(ppt)));
     return ProductResponse.from(products.save(p));
+  }
+
+  @Transactional
+  public ProductResponse update(Long id, ProductUpdateRequest r) {
+    Product p = active(id);
+    p.setName(r.name().trim());
+    p.setSellingPrice(r.sellingPrice());
+    p.setTrayPrice(r.trayPrice());
+    if (r.perTray() != null) p.setPiecesPerTray(r.perTray());
+    return ProductResponse.from(p);
+  }
+
+  /** Never a hard delete: old sales still point at the product, so it is only hidden. */
+  @Transactional
+  public void deactivate(Long id) { active(id).setActive(false); }
+
+  private Product active(Long id) {
+    return products.findById(id).filter(Product::isActive).orElseThrow(() -> ApiException.notFound("Product not found"));
   }
 }

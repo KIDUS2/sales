@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { LayoutDashboard, ShoppingCart, Users, Package, Receipt, RefreshCw, Languages, Sun, Moon } from 'lucide-react'
+import { LayoutDashboard, ShoppingCart, Users, Package, Receipt, RefreshCw, Languages, Sun, Moon, BarChart3, UserCog } from 'lucide-react'
 import { useStore } from './store.jsx'
 import { ethDate } from './util.js'
 import Dashboard from './pages/Dashboard.jsx'
@@ -7,8 +7,10 @@ import Sell from './pages/Sell.jsx'
 import Customers from './pages/Customers.jsx'
 import Stock from './pages/Stock.jsx'
 import Expenses from './pages/Expenses.jsx'
+import Reports from './pages/Reports.jsx'
+import UsersPage from './pages/Users.jsx'
 
-const PAGES = [['Today', LayoutDashboard, Dashboard], ['Sell', ShoppingCart, Sell], ['Customers', Users, Customers], ['Stock', Package, Stock], ['Expenses', Receipt, Expenses]]
+const PAGES = [['Today', LayoutDashboard, Dashboard], ['Sell', ShoppingCart, Sell], ['Customers', Users, Customers], ['Products', Package, Stock], ['Expenses', Receipt, Expenses], ['Reports', BarChart3, Reports], ['Users', UserCog, UsersPage]]
 
 export default function App() {
   const [page, setPage] = useState('Today')

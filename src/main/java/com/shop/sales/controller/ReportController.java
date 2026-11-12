@@ -12,4 +12,7 @@ public class ReportController {
   private final ReportService service;
   @GetMapping("/daily") public DailyReport daily(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) { return service.daily(date); }
   @GetMapping("/products") public List<ProductSales> products(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) { return service.byProduct(date); }
+  @GetMapping("/summary") public RangeReport summary(
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) { return service.range(from, to); }
 }

@@ -12,6 +12,7 @@ export const pieces = (i, p) => (i.unit === 'TRAY' ? i.qty * ppt(p) : i.qty)
 async function http(path, opt) {
   const r = await fetch('/api' + path, { headers: { 'Content-Type': 'application/json' }, ...opt })
   if (!r.ok) { const e = new Error((await r.json().catch(() => ({}))).message || 'Error ' + r.status); e.status = r.status; throw e }
+  if (r.status === 204) return null
   return r.json()
 }
 
@@ -89,6 +90,7 @@ export function StoreProvider({ children }) {
     if (path === '/adjustments') setProducts(ps => ps.map(p => p.id === b.productId ? { ...p, stock: p.stock - b.pieces } : p))
   }
   const act = async (path, body) => { const r = await send(path, body); if (r.queued) applyLocal(path, body); return r }
+  const api = async (path, method = 'GET', body) => { if (!online) throw new Error('This screen needs a connection to the server.'); return http(path, { method, ...(body ? { body: JSON.stringify(body) } : {}) }) }
   const create = async (path, body) => { if (!online) throw new Error('Adding this needs a connection. Add it before going offline.'); const r = await http(path, { method: 'POST', body: JSON.stringify(body) }); await refresh(); return r }
 
   const delta = useMemo(() => {
@@ -108,6 +110,6 @@ export function StoreProvider({ children }) {
     return d
   }, [queue, products])
 
-  const value = { products, customers, report, byProduct, queue, delta, manual, setManual, lang, setLang, online, cart, setCart, t, toast, toastMsg, sync, refresh, act, create }
+  const value = { products, customers, report, byProduct, queue, delta, manual, setManual, lang, setLang, online, cart, setCart, t, toast, toastMsg, sync, refresh, act, create, api }
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>
 }

@@ -1,4 +1,5 @@
 export const T = {
+  Products: 'ምርቶች', Reports: 'ሪፖርት', Users: 'ተጠቃሚዎች',
   'Good morning': 'እንደምን አደሩ', 'Good afternoon': 'እንደምን ዋሉ', 'Good evening': 'እንደምን አመሹ', 'New sale': 'አዲስ ሽያጭ', 'Collect payment': 'ክፍያ ሰብስብ',
   Today: 'ዛሬ', Sell: 'ሽያጭ', Customers: 'ደንበኞች', Stock: 'ክምችት', Expenses: 'ወጪ',
   'Net profit today': 'የዛሬ የተጣራ ትርፍ', 'after all expenses': 'ከሁሉም ወጪ በኋላ', 'Cash received': 'የተቀበልኩት ብር', 'On credit': 'በዱቤ',
