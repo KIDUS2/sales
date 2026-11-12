@@ -59,19 +59,19 @@ public class DispatchService {
             BigDecimal ret = line.map(CloseDispatchRequest.Line::returned).orElse(BigDecimal.ZERO);
             BigDecimal broken = line.map(CloseDispatchRequest.Line::broken).orElse(BigDecimal.ZERO);
             BigDecimal missing = item.remaining().subtract(ret).subtract(broken);
-            if (missing.signum() < 0) throw ApiException.bad("More " + item.name() + " returned than was left in the load (" + item.remaining().stripTrailingZeros().toPlainString() + " eggs)");
+            if (missing.signum() < 0) throw ApiException.bad("More " + item.name() + " returned than was left in the load (" + item.remaining().stripTrailingZeros().toPlainString() + " " + item.unit() + ")");
 
             Product p = products.lockById(item.productId()).orElseThrow();
             p.setStockQty(p.getStockQty().add(ret));
             dispatches.setClosingQty(id, item.productId(), ret, broken);
-            loss(id, admin.id(), DispatchRepository.BROKEN, item.name(), broken, p.getAvgCost());
-            loss(id, admin.id(), DispatchRepository.MISSING, item.name(), missing, p.getAvgCost());
+            loss(id, admin.id(), DispatchRepository.BROKEN, item.name(), item.unit(), broken, p.getAvgCost());
+            loss(id, admin.id(), DispatchRepository.MISSING, item.name(), item.unit(), missing, p.getAvgCost());
         }
         dispatches.close(id, admin.id(), r.cashCounted(), r.note());
         return dispatches.find(id).orElseThrow();
     }
 
-    private void loss(Long dispatchId, Long by, String category, String productName, BigDecimal eggs, BigDecimal avgCost) {
+    private void loss(Long dispatchId, Long by, String category, String productName, String unit, BigDecimal eggs, BigDecimal avgCost) {
         if (eggs.signum() <= 0) return;
         BigDecimal amount = round(eggs.multiply(avgCost).setScale(4, RoundingMode.HALF_UP));
         if (amount.signum() <= 0) return;
@@ -79,7 +79,7 @@ public class DispatchService {
         e.setClientId("load-" + dispatchId + "-" + category.charAt(0) + "-" + productName.hashCode());
         e.setCategory(category);
         e.setAmount(amount);
-        e.setNote(eggs.stripTrailingZeros().toPlainString() + " eggs of " + productName + " (load #" + dispatchId + ")");
+        e.setNote(eggs.stripTrailingZeros().toPlainString() + " " + unit + " of " + productName + " (load #" + dispatchId + ")");
         e.setDispatchId(dispatchId);
         e.setCreatedBy(by);
         expenses.save(e);

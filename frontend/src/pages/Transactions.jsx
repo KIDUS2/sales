@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useStore } from '../store.jsx'
-import { br } from '../util.js'
-import { eggsText } from './MyLoad.jsx'
+import { br, num } from '../util.js'
 
 const TYPES = [['', 'All'], ['SALE', 'Sales'], ['PAYMENT', 'Payments'], ['EXPENSE', 'Expenses'], ['PURCHASE', 'Purchases'], ['ISSUE', 'Stock given'], ['RETURN', 'Stock back']]
 const SIGN = { SALE: '', PAYMENT: '+', EXPENSE: '−', PURCHASE: '−' }
@@ -45,7 +44,7 @@ export default function Transactions() {
               return <tr key={r.kind + r.id + r.at}>
                 <td className="sm" style={{ whiteSpace: 'nowrap' }}>{new Date(r.at).toLocaleDateString()}<div className="muted">{new Date(r.at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div></td>
                 <td><b>{r.title}</b><div className="muted sm">{TYPES.find(t => t[0] === r.kind)?.[1].replace(/s$/, '')}{r.detail ? ' · ' + r.detail : ''}{r.method ? ' · ' + r.method : ''}{r.userName ? ' · ' + r.userName : ''}</div></td>
-                <td style={{ textAlign: 'right', fontWeight: 800, color: COLOR[r.kind], whiteSpace: 'nowrap' }}>{eggs ? eggsText(r.amount) : (SIGN[r.kind] || '') + br(r.amount)}</td>
+                <td style={{ textAlign: 'right', fontWeight: 800, color: COLOR[r.kind], whiteSpace: 'nowrap' }}>{eggs ? num(r.amount) + ' items' : (SIGN[r.kind] || '') + br(r.amount)}</td>
               </tr>
             })}
           </tbody></table>}

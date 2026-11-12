@@ -9,7 +9,7 @@ public record DispatchView(Long id, Long salespersonId, String salespersonName, 
                            Instant openedAt, Instant closedAt, BigDecimal cashCounted,
                            List<Item> items, Totals totals) {
 
-    public record Item(Long productId, String name, int piecesPerTray, BigDecimal issued, BigDecimal sold,
+    public record Item(Long productId, String name, int piecesPerTray, String unit, String packName, BigDecimal issued, BigDecimal sold,
                        BigDecimal returned, BigDecimal broken, BigDecimal remaining) {}
 
     /** cashExpected = cash collected - trip expenses paid from that cash. */

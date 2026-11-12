@@ -41,7 +41,7 @@ export default function UsersPage() {
   return (
     <>
       <div className="row" style={{ marginBottom: 14, flexWrap: 'wrap' }}>
-        <p className="muted" style={{ flex: 1 }}>Add your salespeople here. A salesperson signs in with their phone number, sells only the eggs you give them, and cannot change prices. Managers can do everything except manage users.</p>
+        <p className="muted" style={{ flex: 1 }}>Add your salespeople here. A salesperson signs in with their phone number, sells only the stock you give them, and cannot change prices. Managers can do everything except manage users.</p>
         <button className="btn primary" onClick={() => open('add')}><UserPlus size={16} />Add user</button>
       </div>
       <div className="card" style={{ padding: 6, overflowX: 'auto' }}>

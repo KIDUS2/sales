@@ -32,7 +32,7 @@ export default function Login() {
   return (
     <div className="login">
       <form className="card login-card" onSubmit={submit}>
-        <div className="login-brand"><Logo size={64} /><b>Laba</b><span className="muted">ላባ · Egg sales</span></div>
+        <div className="login-brand"><Logo size={64} /><b>Laba</b><span className="muted">ላባ · Sales</span></div>
         <h2>{setup ? 'Create the owner account' : 'Sign in'}</h2>
         {setup && <p className="muted sm">No one has registered yet. The first account becomes the Owner (admin) and can add salespeople later.</p>}
         {setup && <Field label="Full name"><input value={f.fullName} onChange={set('fullName')} autoComplete="name" /></Field>}

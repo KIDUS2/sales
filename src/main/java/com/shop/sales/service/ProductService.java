@@ -19,12 +19,14 @@ public class ProductService {
 
   @Transactional
   public ProductResponse create(ProductRequest r) {
-    int ppt = r.perTray() == null || r.perTray() <= 0 ? 30 : r.perTray();
+    int ppt = r.perTray() == null || r.perTray() <= 0 ? 1 : r.perTray();   // 1 = sold singly, no pack
     Product p = new Product();
     p.setName(r.name());
     p.setSellingPrice(r.sellingPrice());
     p.setTrayPrice(r.trayPrice());
     p.setPiecesPerTray(ppt);
+    p.setUnit(label(r.unit(), "piece"));
+    p.setPackName(label(r.packName(), "pack"));
     p.setAvgCost(Money.nz(r.costPerTray()).divide(BigDecimal.valueOf(ppt), 4, RoundingMode.HALF_UP));
     p.setStockQty(Money.nz(r.trays()).multiply(BigDecimal.valueOf(ppt)));
     return ProductResponse.from(products.save(p));
@@ -37,8 +39,12 @@ public class ProductService {
     p.setSellingPrice(r.sellingPrice());
     p.setTrayPrice(r.trayPrice());
     if (r.perTray() != null) p.setPiecesPerTray(r.perTray());
+    p.setUnit(label(r.unit(), p.getUnit()));
+    p.setPackName(label(r.packName(), p.getPackName()));
     return ProductResponse.from(p);
   }
+
+  private static String label(String v, String fallback) { return v == null || v.isBlank() ? fallback : v.trim(); }
 
   /** Never a hard delete: old sales still point at the product, so it is only hidden. */
   @Transactional

@@ -92,7 +92,7 @@ public class SaleService {
       if (fromLoad) {
         // the eggs already left the warehouse when the load was issued, so only the load shrinks
         BigDecimal left = dispatches.remaining(dispatchId, p.getId()).subtract(pendingInThisSale(sale, p.getId()));
-        if (left.compareTo(pieces) < 0) throw ApiException.bad("Only " + left.max(BigDecimal.ZERO).stripTrailingZeros().toPlainString() + " eggs of " + p.getName() + " left in your load");
+        if (left.compareTo(pieces) < 0) throw ApiException.bad("Only " + left.max(BigDecimal.ZERO).stripTrailingZeros().toPlainString() + " " + p.getUnit() + " of " + p.getName() + " left in your load");
       } else {
         p.setStockQty(p.getStockQty().subtract(pieces));
       }

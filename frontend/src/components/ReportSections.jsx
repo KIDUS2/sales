@@ -38,9 +38,9 @@ export function exportCsv(r) {
     const t = r.totals
     download(`laba-${r.from}_to_${r.to}.csv`, [
       ['Laba report', r.from, r.to], [],
-      ['Summary'], ['Net sales', t.netSales], ['Cost of eggs', t.cogs], ['Gross profit', t.grossProfit], ['Expenses', t.expenses], ['Net profit', t.netProfit], ['Cash received', t.cashReceived], ['Credit given', t.creditGiven], [],
-      ['Day', 'Net sales', 'Cost of eggs', 'Expenses', 'Profit'], ...r.days.map(d => [d.date, d.netSales, d.cogs, d.expenses, d.profit]), [],
-      ['Product', 'Eggs', 'Sold', 'Cost', 'Profit'], ...r.products.map(p => [p.name, p.qty, p.revenue, p.cost, p.profit]), [],
+      ['Summary'], ['Net sales', t.netSales], ['Cost of goods', t.cogs], ['Gross profit', t.grossProfit], ['Expenses', t.expenses], ['Net profit', t.netProfit], ['Cash received', t.cashReceived], ['Credit given', t.creditGiven], [],
+      ['Day', 'Net sales', 'Cost of goods', 'Expenses', 'Profit'], ...r.days.map(d => [d.date, d.netSales, d.cogs, d.expenses, d.profit]), [],
+      ['Product', 'Quantity', 'Sold', 'Cost', 'Profit'], ...r.products.map(p => [p.name, p.qty, p.revenue, p.cost, p.profit]), [],
       ['Customer', 'Orders', 'Total', 'Paid', 'Owing'], ...r.customers.map(c => [c.name, c.orders, c.total, c.paid, c.owing]), [],
       ['Expense', 'Amount'], ...r.expenses.map(e => [e.category, e.amount]), [],
       ['Owes now', 'Phone', '0-30 days', '31-60 days', 'Over 60 days', 'Total'], ...r.debts.map(d => [d.name, d.phone, d.current, d.days31to60, d.over60, d.total]),
@@ -58,8 +58,8 @@ export default function ReportSections({ r }) {
           </div>
 )}
           <div className="card" style={{ marginBottom: 14, overflowX: 'auto' }}><h3>Sales by product</h3>
-            {r.products.length ? <table><thead><tr><th>Product</th><th className="r">Eggs</th><th className="r">Sold</th><th className="r">Cost</th><th className="r">Profit</th><th className="r">Margin</th></tr></thead><tbody>
-              {r.products.map(p => <tr key={p.name}><td><b>{p.name}</b></td><td className="r">{num(p.qty)}<div className="muted sm">{num(p.qty / 30)} trays</div></td><td className="r">{num(p.revenue)}</td><td className="r">{num(p.cost)}</td><td className="r"><b>{num(p.profit)}</b></td><td className="r">{+p.revenue ? Math.round((p.profit / p.revenue) * 100) : 0}%</td></tr>)}
+            {r.products.length ? <table><thead><tr><th>Product</th><th className="r">Quantity</th><th className="r">Sold</th><th className="r">Cost</th><th className="r">Profit</th><th className="r">Margin</th></tr></thead><tbody>
+              {r.products.map(p => <tr key={p.name}><td><b>{p.name}</b></td><td className="r">{num(p.qty)}</td><td className="r">{num(p.revenue)}</td><td className="r">{num(p.cost)}</td><td className="r"><b>{num(p.profit)}</b></td><td className="r">{+p.revenue ? Math.round((p.profit / p.revenue) * 100) : 0}%</td></tr>)}
             </tbody></table> : <div className="empty">No sales in this period.</div>}
           </div>
           <div className="grid two" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', marginBottom: 14 }}>

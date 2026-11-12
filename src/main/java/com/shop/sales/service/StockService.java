@@ -22,7 +22,7 @@ public class StockService {
     e.setClientId(r.clientId());
     e.setCategory(r.reason());
     e.setAmount(round(p.getAvgCost().multiply(r.pieces())));
-    e.setNote(r.pieces() + " eggs of " + p.getName());
+    e.setNote(r.pieces() + " " + p.getUnit() + " of " + p.getName());
     expenses.save(e);
     p.setStockQty(p.getStockQty().subtract(r.pieces()));
     return new Ack(true, false);

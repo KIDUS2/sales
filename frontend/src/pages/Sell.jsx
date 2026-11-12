@@ -1,17 +1,18 @@
 import { useState } from 'react'
 import { Minus, Plus, Trash2, Search, Printer, Share2, MessageSquare, ShoppingBag, X } from 'lucide-react'
 import { useStore, uid, ppt, trayPrice } from '../store.jsx'
-import { br, METHODS } from '../util.js'
+import { br, METHODS, qtyText, plural } from '../util.js'
 import Modal from '../components/Modal.jsx'
 
 const SHELLS = ['#f4e6c8', '#e9bd8c', '#f8f1e4', '#dba46d']
 const shell = name => SHELLS[[...name].reduce((a, c) => a + c.charCodeAt(0), 0) % SHELLS.length]
-const stockText = p => { const n = +p.stock, tr = Math.floor(n / ppt(p)), e = Math.round(n % ppt(p)); return `${tr} ${tr === 1 ? 'tray' : 'trays'}${e ? ' + ' + e + ' eggs' : ''}` }
+const stockText = p => qtyText(p.stock, p)
+const baseUnit = p => (ppt(p) > 1 ? 'TRAY' : 'PIECE')   // a product with no pack is sold by the single item
 const stateOf = p => (p.stock <= 0 ? 'out' : p.stock < ppt(p) * 2 ? 'low' : 'in')
 const FILTERS = [['all', 'All'], ['in', 'In stock'], ['low', 'Low'], ['out', 'Out']]
 
 function receiptText(r) {
-  const lines = r.lines.map(l => `${l.qty} x ${l.name} (${l.unit === 'TRAY' ? 'tray' : 'egg'}) @ ${l.price} = ${(l.qty * l.price).toFixed(2)}`)
+  const lines = r.lines.map(l => `${l.qty} x ${l.name} (${l.unit === 'TRAY' ? l.pack : l.single}) @ ${l.price} = ${(l.qty * l.price).toFixed(2)}`)
   return ['Laba - Receipt #' + r.no, r.date.toLocaleString(), '', ...lines, '', 'Total: ' + br(r.total), 'Paid (' + r.method + '): ' + br(r.paid),
     ...(r.owing > 0 ? ['Still owing: ' + br(r.owing)] : []), '', 'Thank you for buying from us! አመሰግናለሁ'].join('\n')
 }
@@ -27,16 +28,16 @@ export default function Sell() {
   const maxStock = Math.max(1, ...products.map(p => +p.stock))
   const count = cart.reduce((a, i) => a + i.qty, 0)
 
-  const add = (p, unit = 'TRAY') => setCart(c => {
+  const add = (p, unit = baseUnit(p)) => setCart(c => {
     const i = c.find(x => x.id === p.id && x.unit === unit)
-    return i ? c.map(x => (x === i ? { ...x, qty: x.qty + 1 } : x)) : [...c, { id: p.id, name: p.name, unit, ppt: ppt(p), qty: 1, price: unit === 'TRAY' ? trayPrice(p) : +p.sellingPrice }]
+    return i ? c.map(x => (x === i ? { ...x, qty: x.qty + 1 } : x)) : [...c, { id: p.id, name: p.name, unit, ppt: ppt(p), pack: p.packName || 'pack', single: p.unit || 'piece', qty: 1, price: unit === 'TRAY' ? trayPrice(p) : +p.sellingPrice }]
   })
   const patch = (i, o) => setCart(c => c.map((x, k) => (k === i ? { ...x, ...o } : x)))
   const setUnit = (i, unit) => { const x = cart[i], p = products.find(p => p.id === x.id); patch(i, { unit, price: unit === 'TRAY' ? trayPrice(p) : +p.sellingPrice }) }
   const bump = (i, d) => setCart(c => c.flatMap((x, k) => (k !== i ? [x] : x.qty + d > 0 ? [{ ...x, qty: x.qty + d }] : [])))
 
   async function finish() {
-    if (!cart.length) return toast('Add at least one egg type')
+    if (!cart.length) return toast('Add at least one product')
     if (owing > 0 && !cust) return toast('Choose a customer to sell on credit')
     const body = { clientId: uid(), customerId: cust ? +cust : null, discount, paid: paidNow, total, method, items: cart.map(i => ({ productId: i.id, unit: i.unit, qty: i.qty, price: i.price })) }
     setBusy(true)
@@ -56,25 +57,25 @@ export default function Sell() {
   return (
     <div className="pos">
       <div>
-        <div className="search"><Search size={18} /><input placeholder="Search egg type" value={q} onChange={e => setQ(e.target.value)} aria-label="Search" /></div>
+        <div className="search"><Search size={18} /><input placeholder="Search products" value={q} onChange={e => setQ(e.target.value)} aria-label="Search" /></div>
         <div className="scroll">{FILTERS.map(([k, v]) => <button key={k} className={'chip' + (filter === k ? ' on' : '')} onClick={() => setFilter(k)}>{v}</button>)}</div>
         <div className="prods" style={{ marginTop: 10 }}>
           {list.map(p => {
             const s = stateOf(p)
             return (
               <div key={p.id} className={'prod ' + s}>
-                <button className="prod-main" onClick={() => add(p, 'TRAY')} aria-label={`Add a tray of ${p.name}`}>
+                <button className="prod-main" onClick={() => add(p, baseUnit(p))} aria-label={`Add ${p.name}`}>
                   <span className="shell" style={{ '--shell': shell(p.name) }} />
                   <b>{p.name}</b>
-                  <span className="price">{br(trayPrice(p))}<small> / tray</small></span>
+                  <span className="price">{br(baseUnit(p) === 'TRAY' ? trayPrice(p) : p.sellingPrice)}<small> / {baseUnit(p) === 'TRAY' ? (p.packName || 'pack') : (p.unit || 'piece')}</small></span>
                   <span className="stockbar"><i data-s={s} style={{ width: Math.max(3, Math.min(100, (p.stock / maxStock) * 100)) + '%' }} /></span>
                   <span className="muted sm">{s === 'out' ? (isSales ? 'None left in your load' : 'Out of stock') : stockText(p) + (isSales ? ' in your load' : ' left')}</span>
                 </button>
-                <button className="prod-egg" onClick={() => add(p, 'PIECE')}>+ 1 egg · {br(p.sellingPrice)}</button>
+                {ppt(p) > 1 ? <button className="prod-egg" onClick={() => add(p, 'PIECE')}>+ 1 {p.unit || 'piece'} · {br(p.sellingPrice)}</button> : <span className="prod-egg" style={{ cursor: 'default' }}>&nbsp;</span>}
               </div>
             )
           })}
-          {!list.length && <div className="card empty" style={{ gridColumn: '1/-1' }}>{isSales ? 'You have no eggs to sell. Ask the admin to give you a load.' : 'No egg types found. Add one in Stock.'}</div>}
+          {!list.length && <div className="card empty" style={{ gridColumn: '1/-1' }}>{isSales ? 'You have nothing to sell. Ask the admin to give you a load.' : 'No products found. Add one in Products.'}</div>}
         </div>
       </div>
 
@@ -83,12 +84,12 @@ export default function Sell() {
       <aside className={'card cart' + (open ? ' open' : '')}>
         <div className="row"><h3 style={{ margin: 0 }}>{t('Cart')}</h3>
           <span className="acts">{cart.length > 0 && <button className="btn sm" onClick={() => setCart([])}><Trash2 size={14} />Clear</button>}<button className="btn sm icon sheet-x" onClick={() => setOpen(false)} aria-label="Close cart"><X size={16} /></button></span></div>
-        {!cart.length && <div className="empty">Tap an egg type to add it.</div>}
+        {!cart.length && <div className="empty">Tap a product to add it.</div>}
         {cart.map((x, i) => (
           <div className="line" key={i}>
             <div className="row"><b>{x.name}</b><span className="qty"><button onClick={() => bump(i, -1)} aria-label="Less"><Minus size={14} /></button><b style={{ minWidth: 24, textAlign: 'center' }}>{x.qty}</b><button onClick={() => bump(i, 1)} aria-label="More"><Plus size={14} /></button></span></div>
             <div className="row" style={{ gap: 8 }}>
-              <select value={x.unit} onChange={e => setUnit(i, e.target.value)} style={{ width: '46%' }}><option value="TRAY">Tray ({x.ppt})</option><option value="PIECE">Single egg</option></select>
+              <select value={x.unit} onChange={e => setUnit(i, e.target.value)} style={{ width: '46%' }}>{x.ppt > 1 && <option value="TRAY">{x.pack} ({x.ppt})</option>}<option value="PIECE">Single {x.single}</option></select>
               <input type="number" inputMode="decimal" step="0.01" min="0" value={x.price} onChange={e => patch(i, { price: +e.target.value })} aria-label="Price" readOnly={isSales} title={isSales ? 'The price is set by the admin' : undefined} style={isSales ? { opacity: .7 } : undefined} />
             </div>
           </div>
@@ -113,7 +114,7 @@ export default function Sell() {
           <div className="receipt">
             <b style={{ fontSize: 15 }}>LABA · #{receipt.no}</b>
             <span>{receipt.date.toLocaleString()}</span><hr />
-            {receipt.lines.map((l, i) => <div className="row" key={i}><span>{l.qty} × {l.name} ({l.unit === 'TRAY' ? 'tray' : 'egg'}) @ {l.price}</span><span>{(l.qty * l.price).toFixed(2)}</span></div>)}<hr />
+            {receipt.lines.map((l, i) => <div className="row" key={i}><span>{l.qty} × {l.name} ({l.unit === 'TRAY' ? l.pack : l.single}) @ {l.price}</span><span>{(l.qty * l.price).toFixed(2)}</span></div>)}<hr />
             <div className="row"><b>TOTAL</b><b>{br(receipt.total)}</b></div>
             <div className="row"><span>Paid ({receipt.method})</span><span>{br(receipt.paid)}</span></div>
             {receipt.owing > 0 && <div className="row"><b>Still owing</b><b>{br(receipt.owing)}</b></div>}

@@ -51,7 +51,7 @@ export default function Dashboard({ go }) {
   const pc = Math.max(0, Math.min(100, (n.cash / (n.cash + n.credit || 1)) * 100))
   const debtors = customers.filter(c => c.balance > 0).sort((a, b) => b.balance - a.balance)
   const period = key === 'today' ? '' : key === 'yesterday' ? 'Yesterday' : from === to ? from : `${from} to ${to}`
-  const kpis = [['Net sales', br(n.sales)], ['Cost of eggs', br(n.cogs)], ['Gross profit', br(gp), tt && tt.marginPct + '% margin'], ['Expenses', br(n.exp)], ['Paid to suppliers', br(n.sup)],
+  const kpis = [['Net sales', br(n.sales)], ['Cost of goods', br(n.cogs)], ['Gross profit', br(gp), tt && tt.marginPct + '% margin'], ['Expenses', br(n.exp)], ['Paid to suppliers', br(n.sup)],
     ...(tt ? [['Sales made', tt.salesCount, 'avg ' + br(tt.avgSale)]] : [])]
 
   return (
@@ -89,8 +89,8 @@ export default function Dashboard({ go }) {
           : isToday ? (
             <div className="grid two">
               <div className="card"><h3>{t('Sales by product')}</h3>
-                {byProduct.length ? <table><thead><tr><th>Eggs</th><th className="r">Sold</th><th className="r">Cost</th><th className="r">Profit</th></tr></thead><tbody>
-                  {byProduct.map(p => <tr key={p.name}><td><b>{p.name}</b><div className="muted" style={{ fontSize: 12 }}>{num(p.qty)} eggs · {num(p.qty / 30)} trays</div></td><td className="r">{num(p.revenue)}</td><td className="r">{num(p.cost)}</td><td className="r"><b>{num(p.profit)}</b></td></tr>)}
+                {byProduct.length ? <table><thead><tr><th>Product</th><th className="r">Sold</th><th className="r">Cost</th><th className="r">Profit</th></tr></thead><tbody>
+                  {byProduct.map(p => <tr key={p.name}><td><b>{p.name}</b><div className="muted" style={{ fontSize: 12 }}>{num(p.qty)} sold</div></td><td className="r">{num(p.revenue)}</td><td className="r">{num(p.cost)}</td><td className="r"><b>{num(p.profit)}</b></td></tr>)}
                 </tbody></table> : <div className="empty">No sales yet today.<br /><button className="btn primary sm" style={{ marginTop: 12 }} onClick={() => go('Sell')}>Record the first sale</button></div>}
               </div>
               <div className="card"><h3>{t('Owed to you')}</h3>

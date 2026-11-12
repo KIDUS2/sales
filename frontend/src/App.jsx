@@ -43,7 +43,7 @@ function Shell() {
   return (
     <div className="app">
       <aside className="side">
-        <div className="brand"><Logo size={38} /><span className="wm"><b>Laba</b><small>ላባ · Egg sales</small></span></div>
+        <div className="brand"><Logo size={38} /><span className="wm"><b>Laba</b><small>ላባ · Sales</small></span></div>
         {menu.map(name => { const Icon = ALL[name][0]; return (
           <button key={name} className={'nav' + (page === name ? ' on' : '')} onClick={() => setPage(name)}><Icon size={20} />{t(name)}</button>
         )})}

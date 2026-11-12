@@ -5,7 +5,7 @@ const Ctx = createContext(null)
 export const useStore = () => useContext(Ctx)
 const load = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d } catch { return d } }
 export const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8)
-export const ppt = p => p?.ppt || 30
+export const ppt = p => p?.ppt || 1   // single items per pack; 1 = this product has no pack
 export const trayPrice = p => +(p.trayPrice || p.sellingPrice * ppt(p))
 export const pieces = (i, p) => (i.unit === 'TRAY' ? i.qty * ppt(p) : i.qty)
 

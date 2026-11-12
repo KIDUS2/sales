@@ -3,7 +3,7 @@ import { useStore, uid } from '../store.jsx'
 import { br } from '../util.js'
 import { Field } from '../components/Modal.jsx'
 
-const ADMIN_CATS = ['Fuel', 'Payroll', 'Transport', 'Rent', 'Electricity', 'Trays and packaging', 'Bad debt', 'Other']
+const ADMIN_CATS = ['Fuel', 'Payroll', 'Transport', 'Rent', 'Electricity', 'Packaging', 'Bad debt', 'Other']
 const TRIP_CATS = ['Fuel', 'Transport', 'Loading', 'Meals', 'Other']   // what a salesperson spends on the road
 
 export default function Expenses() {
@@ -32,7 +32,7 @@ export default function Expenses() {
         {lines.map(e => <div className="row" key={e.category} style={{ padding: '9px 0', borderBottom: '1px solid var(--line)' }}><span>{e.category}</span><b>{br(e.amount)}</b></div>)}
         {!lines.length && <div className="empty">No expenses on the server yet today.</div>}
         {delta.exp > 0 && <div className="banner" style={{ marginTop: 12 }}>+ {br(delta.exp)} saved on this device, not yet synced.</div>}
-        <p className="muted" style={{ fontSize: 13, marginTop: 12 }}>Broken and spoiled eggs are added here automatically from Stock and when a load is closed.</p>
+        <p className="muted" style={{ fontSize: 13, marginTop: 12 }}>Broken and spoiled stock is added here automatically from Stock and when a load is closed.</p>
       </div>}
     </div>
   )

@@ -1,7 +1,6 @@
 import { useStore } from '../store.jsx'
-import { br } from '../util.js'
+import { br, qtyText } from '../util.js'
 
-export const eggsText = (n, per = 30) => { n = Math.round(+n || 0); const t = Math.floor(n / per), e = n % per; return `${t} ${t === 1 ? 'tray' : 'trays'}${e ? ' + ' + e + ' eggs' : ''}` }
 
 /** The salesperson's own stock: what they were given, what is sold, what is left, and the cash they hold. */
 export default function MyLoad({ go }) {
@@ -20,12 +19,12 @@ export default function MyLoad({ go }) {
         </div>
         {+open.totals.creditGiven > 0 && <div className="banner" style={{ margin: 0 }}>{br(open.totals.creditGiven)} was sold on credit. That money is not in your cash.</div>}
         <div className="card" style={{ padding: 6, overflowX: 'auto' }}>
-          <table><thead><tr><th>Egg type</th><th>Given</th><th>Sold</th><th>Left</th></tr></thead><tbody>
-            {open.items.map(i => <tr key={i.productId}><td><b>{i.name}</b></td><td>{eggsText(i.issued, i.piecesPerTray)}</td><td>{eggsText(i.sold, i.piecesPerTray)}</td><td><b>{eggsText(i.remaining, i.piecesPerTray)}</b></td></tr>)}
+          <table><thead><tr><th>Product</th><th>Given</th><th>Sold</th><th>Left</th></tr></thead><tbody>
+            {open.items.map(i => <tr key={i.productId}><td><b>{i.name}</b></td><td>{qtyText(i.issued, i)}</td><td>{qtyText(i.sold, i)}</td><td><b>{qtyText(i.remaining, i)}</b></td></tr>)}
           </tbody></table>
         </div>
         <div className="acts" style={{ justifyContent: 'stretch' }}><button className="btn primary" style={{ flex: 1 }} onClick={() => go('Sell')}>Start selling</button><button className="btn" style={{ flex: 1 }} onClick={() => go('Expenses')}>Add expense</button></div>
-        <p className="muted sm">Prices are set by the admin. When you finish, give the cash and the unsold eggs to the admin, who closes the load.</p>
+        <p className="muted sm">Prices are set by the admin. When you finish, give the cash and the unsold stock to the admin, who closes the load.</p>
       </>}
       {past.length > 0 && <div className="card"><h3>Earlier loads</h3>
         {past.map(l => <div className="row" key={l.id} style={{ padding: '9px 0', borderBottom: '1px solid var(--line)' }}><span>#{l.id} · {new Date(l.openedAt).toLocaleDateString()}</span><span className="muted">Sold {br(l.totals.salesTotal)}</span></div>)}

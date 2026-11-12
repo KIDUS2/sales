@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 /** Plain SQL for loads: the totals are sums over sales/payments/expenses, so they can never drift from the real records. */
 @Repository @RequiredArgsConstructor
 public class DispatchRepository {
-    public static final String BROKEN = "Broken eggs", MISSING = "Missing eggs";
+    public static final String BROKEN = "Broken stock", MISSING = "Missing stock";
     private final JdbcTemplate db;
 
     public Optional<Long> openIdFor(Long salespersonId) {
@@ -77,11 +77,11 @@ public class DispatchRepository {
     }
 
     private List<DispatchView.Item> items(Long id) {
-        return db.query("SELECT i.product_id, p.name, p.pieces_per_tray, i.issued_qty, i.returned_qty, i.broken_qty, "
+        return db.query("SELECT i.product_id, p.name, p.pieces_per_tray, p.unit, p.pack_name, i.issued_qty, i.returned_qty, i.broken_qty, "
                 + "COALESCE((SELECT SUM(si.qty) FROM sale_items si JOIN sales s ON s.id=si.sale_id WHERE s.dispatch_id=i.dispatch_id AND si.product_id=i.product_id AND s.status<>'VOID'),0) AS sold "
                 + "FROM dispatch_items i JOIN products p ON p.id=i.product_id WHERE i.dispatch_id=? ORDER BY p.name", (rs, n) -> {
             BigDecimal issued = rs.getBigDecimal("issued_qty"), sold = rs.getBigDecimal("sold"), ret = rs.getBigDecimal("returned_qty"), br = rs.getBigDecimal("broken_qty");
-            return new DispatchView.Item(rs.getLong("product_id"), rs.getString("name"), rs.getInt("pieces_per_tray"), issued, sold, ret, br, issued.subtract(sold).subtract(ret).subtract(br));
+            return new DispatchView.Item(rs.getLong("product_id"), rs.getString("name"), rs.getInt("pieces_per_tray"), rs.getString("unit"), rs.getString("pack_name"), issued, sold, ret, br, issued.subtract(sold).subtract(ret).subtract(br));
         }, id);
     }
 

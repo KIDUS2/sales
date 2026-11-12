@@ -9,7 +9,8 @@ import lombok.Setter;
 public class Product {
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
   private String name;
-  private String unit = "egg";
+  private String unit = "piece";                // what one single item is called: egg, bottle, kg ...
+  private String packName = "pack";                // what a pack is called: tray, carton, box, sack ...
   private BigDecimal sellingPrice;                 // per single egg
   private BigDecimal trayPrice;                    // per tray (nullable)
   private int piecesPerTray = 30;
