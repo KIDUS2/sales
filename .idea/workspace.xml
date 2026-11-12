@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4670e45c-90dd-4be9-9d74-242a77e3037d" name="Changes" comment="" />
+    <list default="true" id="4670e45c-90dd-4be9-9d74-242a77e3037d" name="Changes" comment="init" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -22,69 +22,79 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/KIDUS2/sales.git",
-    "accountId": "11c35eee-4548-4b61-b48f-863bc625bd41"
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "KIDUS2"
   }
 }]]></component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/KIDUS2/sales.git&quot;,
+    &quot;accountId&quot;: &quot;11c35eee-4548-4b61-b48f-863bc625bd41&quot;
+  }
+}</component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.4402427982562929" />
-      <entry key="MS500" value="2.9601249590880063" />
-      <entry key="S2" value="5.2368898901142185" />
-      <entry key="S5" value="6.1945088274711555" />
-      <entry key="S10" value="6.7018628154538495" />
-      <entry key="S30" value="10.325084883589808" />
-      <entry key="S60" value="15.871261694334917" />
-      <entry key="M2" value="21.546037098368547" />
-      <entry key="M5" value="26.627531060100143" />
-      <entry key="M10" value="28.70085732380859" />
-      <entry key="M15" value="29.441052051809645" />
-      <entry key="M30" value="30.25082445925854" />
-      <entry key="H1" value="31.52639254281992" />
-      <entry key="H2" value="35.0911611394785" />
-      <entry key="H4" value="40.158119220659046" />
-      <entry key="D1" value="49.87222130682978" />
-      <entry key="W1" value="55.45641412475096" />
+      <entry key="MS100" value="1.489437280988725" />
+      <entry key="MS500" value="3.403256988050992" />
+      <entry key="S2" value="4.5039450695032075" />
+      <entry key="S5" value="4.79210257254744" />
+      <entry key="S10" value="4.894395995107365" />
+      <entry key="S30" value="4.965059608547531" />
+      <entry key="S60" value="5.103269734335603" />
+      <entry key="M2" value="6.905785394090097" />
+      <entry key="M5" value="15.463245504510322" />
+      <entry key="M10" value="23.555434410929344" />
+      <entry key="M15" value="27.474147945485722" />
+      <entry key="M30" value="32.26587507802135" />
+      <entry key="H1" value="35.82595814078256" />
+      <entry key="H2" value="40.56512273386896" />
+      <entry key="H4" value="46.28117105269212" />
+      <entry key="D1" value="56.690639663388716" />
+      <entry key="W1" value="62.42762699528617" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="4.2030456845294267E-286" />
-      <entry key="MS500" value="8.408389517310313E-58" />
-      <entry key="S2" value="5.384906979026018E-15" />
-      <entry key="S5" value="1.9609715016480774E-6" />
-      <entry key="S10" value="0.0014003469218904563" />
-      <entry key="S30" value="0.11187813386599664" />
-      <entry key="S60" value="0.33448188869652784" />
-      <entry key="M2" value="0.5783440919526436" />
-      <entry key="M5" value="0.8032939967570347" />
-      <entry key="M10" value="0.8962667164697933" />
-      <entry key="M15" value="0.9295967225083984" />
-      <entry key="M30" value="0.9667187981646038" />
-      <entry key="H1" value="1.0325708634103241" />
-      <entry key="H2" value="1.215988768173651" />
-      <entry key="H4" value="1.469866491806653" />
-      <entry key="D1" value="1.8823746784204678" />
-      <entry key="W1" value="1.982294131697952" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="5.2E-322" />
+      <entry key="S2" value="4.764007504724567E-81" />
+      <entry key="S5" value="7.433425185480881E-33" />
+      <entry key="S10" value="8.621731372224998E-17" />
+      <entry key="S30" value="4.417719757113823E-6" />
+      <entry key="S60" value="0.0021018372337347673" />
+      <entry key="M2" value="0.04584579843055158" />
+      <entry key="M5" value="0.2914203102725865" />
+      <entry key="M10" value="0.5398336051626266" />
+      <entry key="M15" value="0.662994128269478" />
+      <entry key="M30" value="0.8164088667871369" />
+      <entry key="H1" value="0.9489069789061426" />
+      <entry key="H2" value="1.1656856515332907" />
+      <entry key="H4" value="1.4391426140549168" />
+      <entry key="D1" value="1.8757591028663652" />
+      <entry key="W1" value="1.9812973806821599" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="1.4037852813823348" />
-      <entry key="MS500" value="2.939158434769717" />
-      <entry key="S2" value="5.224574120154606" />
-      <entry key="S5" value="6.1884142185077975" />
-      <entry key="S10" value="6.699538148731927" />
-      <entry key="S30" value="10.422363712629647" />
-      <entry key="S60" value="16.184148228152463" />
-      <entry key="M2" value="22.105496563517786" />
-      <entry key="M5" value="27.420230813684636" />
-      <entry key="M10" value="29.591192618503985" />
-      <entry key="M15" value="30.36654241960771" />
-      <entry key="M30" value="31.215408607697928" />
-      <entry key="H1" value="32.55785240785456" />
-      <entry key="H2" value="36.306546872107795" />
-      <entry key="H4" value="41.62765258094509" />
-      <entry key="D1" value="51.754531353548785" />
-      <entry key="W1" value="57.43869848240349" />
+      <entry key="MS100" value="1.4362922918078311" />
+      <entry key="MS500" value="3.3751421891629545" />
+      <entry key="S2" value="4.4943558398044186" />
+      <entry key="S5" value="4.787998598092408" />
+      <entry key="S10" value="4.892296392327684" />
+      <entry key="S30" value="4.964352688484943" />
+      <entry key="S60" value="5.104877774414232" />
+      <entry key="M2" value="6.949948921575338" />
+      <entry key="M5" value="15.750740603361411" />
+      <entry key="M10" value="24.091651573462386" />
+      <entry key="M15" value="28.13418326916556" />
+      <entry key="M30" value="33.08046562369162" />
+      <entry key="H1" value="36.773836207883456" />
+      <entry key="H2" value="41.73022629235745" />
+      <entry key="H4" value="47.71998548677972" />
+      <entry key="D1" value="58.566334025032766" />
+      <entry key="W1" value="64.40891455870805" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -95,35 +105,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Maven.sales [clean].executor": "Run",
-    "Maven.sales [install].executor": "Run",
-    "Maven.sales [validate].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "Spring Boot.SalesApplication.executor": "Run",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/kidus/Downloads/salesapp",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "MavenSettings"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Maven.sales [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.sales [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.sales [validate].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.SalesApplication.executor&quot;: &quot;Run&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/kidus/Downloads/salesapp&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="SalesApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="sales" />
@@ -153,6 +163,10 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="init" />
+    <option name="LAST_COMMIT_MESSAGE" value="init" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
