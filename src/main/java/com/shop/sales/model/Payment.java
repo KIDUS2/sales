@@ -13,5 +13,7 @@ public class Payment {
   private Long saleId;
   private BigDecimal amount;
   @Enumerated(EnumType.STRING) private PaymentMethod method = PaymentMethod.CASH;
+  private Long dispatchId;
+  private Long receivedBy;
   private Instant createdAt = Instant.now();
 }

@@ -18,6 +18,8 @@ public class Sale {
   private BigDecimal paidAmount = BigDecimal.ZERO;
   @Enumerated(EnumType.STRING) private SaleStatus status = SaleStatus.CREDIT;
   private String voidReason;
+  private Long dispatchId;               // the load this sale came from (null = sold from the warehouse)
+  private Long soldBy;
   @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL) private List<SaleItem> items = new ArrayList<>();
 
   public void addItem(SaleItem i) { i.setSale(this); items.add(i); }

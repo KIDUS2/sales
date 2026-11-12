@@ -3,8 +3,8 @@ import { UserPlus, Pencil, KeyRound, Power, Trash2 } from 'lucide-react'
 import { useStore } from '../store.jsx'
 import Modal, { Field } from '../components/Modal.jsx'
 
-const ROLES = { OWNER: 'Owner', MANAGER: 'Manager', CASHIER: 'Cashier' }
-const empty = { fullName: '', phone: '', email: '', password: '' }
+const ROLES = { OWNER: 'Admin (owner)', MANAGER: 'Manager', CASHIER: 'Salesperson' }
+const empty = { fullName: '', phone: '', email: '', password: '', role: 'CASHIER' }
 
 export default function UsersPage() {
   const { api, online, toast } = useStore()
@@ -24,7 +24,7 @@ export default function UsersPage() {
   const add = run(async () => {
     if (!f.fullName.trim() || !f.phone.trim()) throw new Error('Enter the name and phone number')
     if (f.password.length < 8) throw new Error('The password needs at least 8 characters')
-    await api('/auth/register', 'POST', { fullName: f.fullName, phone: f.phone, email: f.email || null, password: f.password })
+    await api('/auth/register', 'POST', { fullName: f.fullName, phone: f.phone, email: f.email || null, password: f.password, role: f.role })
   }, 'User added')
   const edit = run(() => api('/users/' + modal.u.id, 'PUT', { fullName: f.fullName, phone: f.phone, email: f.email || null }), 'User updated')
   const password = run(async () => {
@@ -41,7 +41,7 @@ export default function UsersPage() {
   return (
     <>
       <div className="row" style={{ marginBottom: 14, flexWrap: 'wrap' }}>
-        <p className="muted" style={{ flex: 1 }}>The first person registered is the Owner. Everyone else starts as a Cashier, and you can change the role here.</p>
+        <p className="muted" style={{ flex: 1 }}>Add your salespeople here. A salesperson signs in with their phone number, sells only the eggs you give them, and cannot change prices. Managers can do everything except manage users.</p>
         <button className="btn primary" onClick={() => open('add')}><UserPlus size={16} />Add user</button>
       </div>
       <div className="card" style={{ padding: 6, overflowX: 'auto' }}>
@@ -66,6 +66,7 @@ export default function UsersPage() {
         <Field label="Full name"><input value={f.fullName} onChange={set('fullName')} autoFocus /></Field>
         <Field label="Phone (e.g. 0912345678)"><input type="tel" inputMode="tel" value={f.phone} onChange={set('phone')} /></Field>
         <Field label="Email (optional)"><input type="email" value={f.email} onChange={set('email')} /></Field>
+        <Field label="Role"><select value={f.role} onChange={set('role')}><option value="CASHIER">Salesperson</option><option value="MANAGER">Manager</option><option value="OWNER">Admin (owner)</option></select></Field>
         <Field label="Password (8 characters or more)"><input type="password" value={f.password} onChange={set('password')} autoComplete="new-password" /></Field>
         <button className="btn primary block" disabled={busy} onClick={add}>Add user</button></Modal>}
       {modal?.m === 'edit' && <Modal title={'Edit ' + modal.u.fullName} onClose={() => setModal(null)}>

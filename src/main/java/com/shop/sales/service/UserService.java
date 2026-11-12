@@ -5,6 +5,7 @@ import com.shop.sales.enumuration.Role;
 import com.shop.sales.exception.ApiException;
 import com.shop.sales.model.*;
 import com.shop.sales.repository.UserRepository;
+import com.shop.sales.security.TokenService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
     private final UserRepository users;
     private final PasswordEncoder encoder;
+    private final TokenService tokens;
 
     // ---------- create ----------
     /** The first person to register owns the shop. Everyone after that starts as a cashier. */
@@ -31,7 +33,7 @@ public class UserService {
         u.setPhone(phone);
         u.setEmail(email);
         u.setPasswordHash(encoder.encode(r.password()));
-        u.setRole(users.count() == 0 ? Role.OWNER : Role.CASHIER);
+        u.setRole(users.count() == 0 ? Role.OWNER : r.role() == null ? Role.CASHIER : r.role());
         return UserResponse.from(users.save(u));
     }
 
@@ -69,7 +71,7 @@ public class UserService {
     @Transactional
     public UserResponse setActive(Long id, boolean active) {
         User u = find(id);
-        if (!active) ensureNotLastOwner(u);
+        if (!active) { ensureNotLastOwner(u); tokens.revokeAll(id); }
         u.setActive(active);
         return UserResponse.from(u);
     }
@@ -88,6 +90,7 @@ public class UserService {
     @Transactional
     public void resetPassword(Long id, ResetPasswordRequest r) {
         find(id).setPasswordHash(encoder.encode(r.newPassword()));
+        tokens.revokeAll(id);
     }
 
     // ---------- delete ----------

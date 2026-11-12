@@ -17,11 +17,12 @@ function receiptText(r) {
 }
 
 export default function Sell() {
-  const { products, customers, cart, setCart, act, toast, t } = useStore()
+  const { products, customers, cart, setCart, act, toast, t, isSales } = useStore()
   const [q, setQ] = useState(''), [filter, setFilter] = useState('all'), [open, setOpen] = useState(false)
   const [cust, setCust] = useState(''), [disc, setDisc] = useState(''), [method, setMethod] = useState('CASH')
   const [paid, setPaid] = useState(null), [receipt, setReceipt] = useState(null), [busy, setBusy] = useState(false)
-  const sub = cart.reduce((a, i) => a + i.price * i.qty, 0), total = Math.max(0, sub - (+disc || 0))
+  const discount = isSales ? 0 : +disc || 0   // a salesperson cannot give discounts; prices are the admin's
+  const sub = cart.reduce((a, i) => a + i.price * i.qty, 0), total = Math.max(0, sub - discount)
   const paidNow = paid === null ? total : Math.min(+paid || 0, total), owing = total - paidNow
   const maxStock = Math.max(1, ...products.map(p => +p.stock))
   const count = cart.reduce((a, i) => a + i.qty, 0)
@@ -37,7 +38,7 @@ export default function Sell() {
   async function finish() {
     if (!cart.length) return toast('Add at least one egg type')
     if (owing > 0 && !cust) return toast('Choose a customer to sell on credit')
-    const body = { clientId: uid(), customerId: cust ? +cust : null, discount: +disc || 0, paid: paidNow, total, method, items: cart.map(i => ({ productId: i.id, unit: i.unit, qty: i.qty, price: i.price })) }
+    const body = { clientId: uid(), customerId: cust ? +cust : null, discount, paid: paidNow, total, method, items: cart.map(i => ({ productId: i.id, unit: i.unit, qty: i.qty, price: i.price })) }
     setBusy(true)
     try {
       const r = await act('/sales', body)
@@ -67,13 +68,13 @@ export default function Sell() {
                   <b>{p.name}</b>
                   <span className="price">{br(trayPrice(p))}<small> / tray</small></span>
                   <span className="stockbar"><i data-s={s} style={{ width: Math.max(3, Math.min(100, (p.stock / maxStock) * 100)) + '%' }} /></span>
-                  <span className="muted sm">{s === 'out' ? 'Out of stock' : stockText(p) + ' left'}</span>
+                  <span className="muted sm">{s === 'out' ? (isSales ? 'None left in your load' : 'Out of stock') : stockText(p) + (isSales ? ' in your load' : ' left')}</span>
                 </button>
                 <button className="prod-egg" onClick={() => add(p, 'PIECE')}>+ 1 egg · {br(p.sellingPrice)}</button>
               </div>
             )
           })}
-          {!list.length && <div className="card empty" style={{ gridColumn: '1/-1' }}>No egg types found. Add one in Stock.</div>}
+          {!list.length && <div className="card empty" style={{ gridColumn: '1/-1' }}>{isSales ? 'You have no eggs to sell. Ask the admin to give you a load.' : 'No egg types found. Add one in Stock.'}</div>}
         </div>
       </div>
 
@@ -88,14 +89,14 @@ export default function Sell() {
             <div className="row"><b>{x.name}</b><span className="qty"><button onClick={() => bump(i, -1)} aria-label="Less"><Minus size={14} /></button><b style={{ minWidth: 24, textAlign: 'center' }}>{x.qty}</b><button onClick={() => bump(i, 1)} aria-label="More"><Plus size={14} /></button></span></div>
             <div className="row" style={{ gap: 8 }}>
               <select value={x.unit} onChange={e => setUnit(i, e.target.value)} style={{ width: '46%' }}><option value="TRAY">Tray ({x.ppt})</option><option value="PIECE">Single egg</option></select>
-              <input type="number" inputMode="decimal" step="0.01" min="0" value={x.price} onChange={e => patch(i, { price: +e.target.value })} aria-label="Price" />
+              <input type="number" inputMode="decimal" step="0.01" min="0" value={x.price} onChange={e => patch(i, { price: +e.target.value })} aria-label="Price" readOnly={isSales} title={isSales ? 'The price is set by the admin' : undefined} style={isSales ? { opacity: .7 } : undefined} />
             </div>
           </div>
         ))}
         <label className="field">Customer<select value={cust} onChange={e => setCust(e.target.value)}><option value="">{t('Walk-in customer')}</option>{customers.map(c => <option key={c.id} value={c.id}>{c.name}{c.balance > 0 ? ` (owes ${c.balance})` : ''}</option>)}</select></label>
         <div className="chips">{METHODS.map(([k, v]) => <button key={k} className={'chip' + (method === k ? ' on' : '')} onClick={() => setMethod(k)}>{v}</button>)}</div>
         <div className="row" style={{ gap: 10 }}>
-          <label className="field" style={{ flex: 1 }}>{t('Discount')}<input type="number" inputMode="decimal" min="0" value={disc} onChange={e => setDisc(e.target.value)} placeholder="0" /></label>
+          {!isSales && <label className="field" style={{ flex: 1 }}>{t('Discount')}<input type="number" inputMode="decimal" min="0" value={disc} onChange={e => setDisc(e.target.value)} placeholder="0" /></label>}
           <label className="field" style={{ flex: 1 }}>{t('Paid now')}<input type="number" inputMode="decimal" min="0" value={paid === null ? total : paid} onChange={e => setPaid(e.target.value)} /></label>
         </div>
         <div className="totals">

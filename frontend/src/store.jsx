@@ -9,14 +9,18 @@ export const ppt = p => p?.ppt || 30
 export const trayPrice = p => +(p.trayPrice || p.sellingPrice * ppt(p))
 export const pieces = (i, p) => (i.unit === 'TRAY' ? i.qty * ppt(p) : i.qty)
 
+let authToken = load('token', null)
 async function http(path, opt) {
-  const r = await fetch('/api' + path, { headers: { 'Content-Type': 'application/json' }, ...opt })
+  const r = await fetch('/api' + path, { headers: { 'Content-Type': 'application/json', ...(authToken ? { Authorization: 'Bearer ' + authToken } : {}) }, ...opt })
   if (!r.ok) { const e = new Error((await r.json().catch(() => ({}))).message || 'Error ' + r.status); e.status = r.status; throw e }
   if (r.status === 204) return null
   return r.json()
 }
 
 export function StoreProvider({ children }) {
+  const [token, setTokenState] = useState(authToken)
+  const [user, setUser] = useState(() => load('user', null))
+  const [loads, setLoads] = useState(() => load('loads', []))
   const [products, setProducts] = useState(() => load('products', []))
   const [customers, setCustomers] = useState(() => load('customers', []))
   const [report, setReport] = useState(() => load('report', null))
@@ -32,33 +36,49 @@ export function StoreProvider({ children }) {
   const syncing = useRef(false), timer = useRef()
 
   useEffect(() => {
-    const s = { products, customers, report, byProduct, queue, manual, lang }
+    const s = { products, customers, report, byProduct, queue, manual, lang, loads, user, token }
     for (const k in s) localStorage.setItem(k, JSON.stringify(s[k]))
-  }, [products, customers, report, byProduct, queue, manual, lang])
+  }, [products, customers, report, byProduct, queue, manual, lang, loads, user, token])
   useEffect(() => {
     const on = () => setNetUp(true), off = () => setNetUp(false)
     addEventListener('online', on); addEventListener('offline', off)
     return () => { removeEventListener('online', on); removeEventListener('offline', off) }
   }, [])
 
+  const setToken = v => { authToken = v; setTokenState(v) }
+  const isSales = user?.role === 'CASHIER'
+  // 401 = the login ran out. Go back to the login screen but KEEP the saved entries: they are sent after the next login.
+  const lostLogin = () => { setToken(null) }
   const online = !manual && netUp && serverUp
   const t = useCallback(k => (lang === 'am' && T[k]) || k, [lang])
   const toast = useCallback(m => { setToastMsg(m); clearTimeout(timer.current); timer.current = setTimeout(() => setToastMsg(''), 3000) }, [])
 
   const refresh = useCallback(async () => {
+    if (!authToken) return
     try {
-      const [p, c, r, b] = await Promise.all([http('/products'), http('/customers'), http('/reports/daily'), http('/reports/products')])
-      setProducts(p); setCustomers(c); setReport(r); setByProduct(b); setServerUp(true)
-    } catch { setServerUp(false) }
-  }, [])
+      if (user?.role === 'CASHIER') {
+        // a salesperson sells only what is in their open load, so the stock they see is what is left in it
+        const [p, c, l] = await Promise.all([http('/products'), http('/customers'), http('/dispatches/mine')])
+        const open = l.find(x => x.status === 'OPEN')
+        setProducts(open ? p.filter(x => open.items.some(i => i.productId === x.id)).map(x => ({ ...x, cost: 0, stock: +open.items.find(i => i.productId === x.id).remaining })) : [])
+        setCustomers(c); setLoads(l)
+      } else {
+        const [p, c, r, b] = await Promise.all([http('/products'), http('/customers'), http('/reports/daily'), http('/reports/products')])
+        setProducts(p); setCustomers(c); setReport(r); setByProduct(b)
+      }
+      setServerUp(true)
+    } catch (e) { if (e.status === 401) lostLogin(); else setServerUp(false) }
+  }, [user?.role]) // eslint-disable-line
 
   const sync = useCallback(async () => {
     if (syncing.current) return
     syncing.current = true; let done = 0
     try {
-      for (const op of [...queueRef.current]) {
+      // entries are sent only by the person who made them
+      for (const op of queueRef.current.filter(o => !o.uid || o.uid === user?.id)) {
         try { await http(op.path, { method: 'POST', body: JSON.stringify(op.body) }); done++; setQueue(q => q.filter(x => x.id !== op.id)) }
         catch (e) {
+          if (e.status === 401) { lostLogin(); break }
           if (e.status && e.status < 500) { setQueue(q => q.filter(x => x.id !== op.id)); toast('Rejected: ' + e.message) }
           else { setServerUp(false); break }
         }
@@ -66,17 +86,17 @@ export function StoreProvider({ children }) {
     } finally { syncing.current = false }
     if (done) toast(done + (done === 1 ? ' entry' : ' entries') + ' saved to the server')
     await refresh()
-  }, [refresh, toast])
+  }, [refresh, toast, user?.id])
 
-  useEffect(() => { if (online) (queueRef.current.length ? sync() : refresh()) }, [online]) // eslint-disable-line
-  useEffect(() => { const i = setInterval(() => { if (!manual && navigator.onLine && !syncing.current) refresh() }, 15000); return () => clearInterval(i) }, [manual, refresh])
+  useEffect(() => { if (online && token) (queueRef.current.length ? sync() : refresh()) }, [online, token]) // eslint-disable-line
+  useEffect(() => { const i = setInterval(() => { if (token && !manual && navigator.onLine && !syncing.current) refresh() }, 15000); return () => clearInterval(i) }, [manual, refresh, token])
 
   const send = async (path, body) => {
     if (online) {
       try { const r = await http(path, { method: 'POST', body: JSON.stringify(body) }); refresh(); return r }
-      catch (e) { if (e.status && e.status < 500) throw e; setServerUp(false) }
+      catch (e) { if (e.status === 401) { lostLogin(); throw e }; if (e.status && e.status < 500) throw e; setServerUp(false) }
     }
-    setQueue(q => [...q, { id: body.clientId, path, body }])
+    setQueue(q => [...q, { id: body.clientId, path, body, uid: user?.id }])
     return { queued: true }
   }
   // keeps the screen numbers right while entries wait to be synced
@@ -110,6 +130,12 @@ export function StoreProvider({ children }) {
     return d
   }, [queue, products])
 
-  const value = { products, customers, report, byProduct, queue, delta, manual, setManual, lang, setLang, online, cart, setCart, t, toast, toastMsg, sync, refresh, act, create, api }
+  const login = async (phone, password) => {
+    const r = await http('/auth/login', { method: 'POST', body: JSON.stringify({ phone, password }) })
+    if (r.user.id !== user?.id) { setProducts([]); setCustomers([]); setReport(null); setByProduct([]); setLoads([]) }   // never show the previous person's numbers
+    setUser(r.user); setToken(r.token)
+  }
+  const logout = async () => { try { await http('/auth/logout', { method: 'POST' }) } catch { /* offline: the token simply expires */ } setToken(null) }
+  const value = { token, user, isSales, loads, login, logout, products, customers, report, byProduct, queue, delta, manual, setManual, lang, setLang, online, cart, setCart, t, toast, toastMsg, sync, refresh, act, create, api }
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>
 }

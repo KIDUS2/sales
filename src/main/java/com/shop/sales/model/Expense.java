@@ -12,5 +12,7 @@ public class Expense {
   private String category;
   private BigDecimal amount;
   private String note;
+  private Long dispatchId;
+  private Long createdBy;
   private Instant createdAt = Instant.now();
 }

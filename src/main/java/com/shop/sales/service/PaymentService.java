@@ -3,6 +3,9 @@ import com.shop.sales.dto.*;
 import com.shop.sales.exception.ApiException;
 import com.shop.sales.model.*;
 import com.shop.sales.repository.*;
+import com.shop.sales.enumuration.Role;
+import com.shop.sales.security.AuthUser;
+import com.shop.sales.security.CurrentUser;
 import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,7 @@ public class PaymentService {
   private final PaymentRepository payments;
   private final SaleRepository sales;
   private final CustomerRepository customers;
+  private final DispatchRepository dispatches;
 
   /** A later payment is not a new sale. It is spread over the oldest unpaid sales first. */
   @Transactional
@@ -21,7 +25,14 @@ public class PaymentService {
     if (payments.existsByClientId(r.clientId())) return new PaymentResponse(BigDecimal.ZERO, BigDecimal.ZERO, true);
     if (!customers.existsById(r.customerId())) throw ApiException.notFound("Customer not found");
 
+    AuthUser user = CurrentUser.get();
+    Long dispatchId = null;
+    if (user != null && user.role() == Role.CASHIER)   // money a salesperson collects belongs to their load
+      dispatchId = dispatches.openIdFor(user.id()).orElseThrow(() -> ApiException.bad("You have no open load"));
+
     Payment p = new Payment();
+    p.setDispatchId(dispatchId);
+    p.setReceivedBy(user == null ? null : user.id());
     p.setClientId(r.clientId());
     p.setCustomerId(r.customerId());
     p.setAmount(r.amount());
