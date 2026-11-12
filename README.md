@@ -32,4 +32,8 @@
 - **Development:** `cd frontend && npm install && npm run dev`  -> http://localhost:5173 (calls the API on 8080)
 - **Production:** `cd frontend && npm run build` writes the UI into `src/main/resources/static`; Spring Boot serves it at http://localhost:8080
 - A built copy is already in `src/main/resources/static`.
-# sales
+
+## UI polish (v4)
+- Light/dark theme button, glass top bar, mobile bottom navigation with a slide-up cart sheet.
+- Sell: stock bars, filters, "+1 egg" quick add, thank-you receipt with Share and SMS.
+- Customers: call and SMS reminder buttons. Today: greeting and quick actions.
