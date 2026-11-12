@@ -1,5 +1,17 @@
+import { useEffect, useState } from 'react'
 import { useStore } from '../store.jsx'
 import { br, num, daysSince } from '../util.js'
+
+const greet = t => { const h = new Date().getHours(); return t(h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening') }
+function useCount(v) {
+  const [x, setX] = useState(v)
+  useEffect(() => {
+    const from = x, s = performance.now(); let f
+    const step = n => { const k = Math.min(1, (n - s) / 600); setX(from + (v - from) * (1 - Math.pow(1 - k, 3))); if (k < 1) f = requestAnimationFrame(step) }
+    f = requestAnimationFrame(step); return () => cancelAnimationFrame(f)
+  }, [v]) // eslint-disable-line
+  return x
+}
 
 export default function Dashboard({ go }) {
   const { report: r0, delta: d, byProduct, customers, queue, t } = useStore()
@@ -7,12 +19,16 @@ export default function Dashboard({ go }) {
   const sales = +r.netSales + d.gross - d.disc, cogs = +r.cogs + d.cogs, gp = sales - cogs, exp = +r.expenses + d.exp
   const net = gp - exp, cash = +r.cashReceived + d.cash, credit = +r.creditGiven + d.credit
   const pc = Math.max(0, Math.min(100, (cash / (cash + credit || 1)) * 100))
+  const netA = useCount(net)
   const debtors = customers.filter(c => c.balance > 0).sort((a, b) => b.balance - a.balance)
   return (
     <>
       {queue.length > 0 && <div className="banner">{queue.length} entries are saved on this device and included below. They will go to the server when you are online.</div>}
       <section className="hero">
+        <div className="greet">{greet(t)}</div>
         <small>{t('Net profit today')} · {t('after all expenses')}</small>
+        <div className="big">{br(netA)}</div>
+        <div className="quick"><button className="btn primary sm" onClick={() => go('Sell')}>{t('New sale')}</button><button className="btn glass sm" onClick={() => go('Customers')}>{t('Collect payment')}</button></div>
         <div className="big">{br(net)}</div>
         <div className="bar"><i style={{ width: pc + '%', background: '#3ddba5' }} /><i style={{ width: 100 - pc + '%', background: 'var(--brand)' }} /></div>
         <div className="legend">

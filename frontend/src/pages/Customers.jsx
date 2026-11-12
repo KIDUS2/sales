@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { Plus, Search } from 'lucide-react'
 import { useStore, uid } from '../store.jsx'
 import { br, daysSince, TYPES, METHODS } from '../util.js'
 import Modal, { Field } from '../components/Modal.jsx'
@@ -31,7 +30,6 @@ export default function Customers() {
               <td><b>{c.name}</b><div className="muted" style={{ fontSize: 12 }}>{c.phone}</div></td>
               <td className="muted">{TYPES[c.type]}</td>
               <td className="r">{c.balance > 0 ? <><span className="badge">owes {br(c.balance)}</span>{daysSince(c.oldestDebt) > 0 && <div className="muted" style={{ fontSize: 12 }}>{daysSince(c.oldestDebt)} days</div>}</> : <span className="badge ok">{c.balance < 0 ? 'advance ' + br(-c.balance) : 'clear'}</span>}</td>
-              <td className="r"><button className="btn sm" onClick={() => { setPay(c); setAmount('') }}>{t('Receive payment')}</button></td>
             </tr>
           ))}
         </tbody></table> : <div className="empty">No customers found.</div>}

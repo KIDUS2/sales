@@ -1,5 +1,3 @@
-import { useState } from 'react'
-import { LayoutDashboard, ShoppingCart, Users, Package, Receipt, RefreshCw, Languages } from 'lucide-react'
 import { useStore } from './store.jsx'
 import { ethDate } from './util.js'
 import Dashboard from './pages/Dashboard.jsx'
