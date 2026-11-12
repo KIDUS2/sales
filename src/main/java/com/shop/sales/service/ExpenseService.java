@@ -31,7 +31,11 @@ public class ExpenseService {
     if (r.category().equals(DispatchRepository.BROKEN) || r.category().equals(DispatchRepository.MISSING))
       if (dispatchId != null) throw ApiException.bad("Broken and missing eggs are recorded when the load is closed");
 
+    String employee = r.employee() == null ? "" : r.employee().trim();
+    if (r.category().equals("Payroll") && employee.isEmpty()) throw ApiException.bad("Enter the name of the employee who was paid");
+
     Expense e = new Expense();
+    e.setEmployee(employee.isEmpty() ? null : employee);
     e.setDispatchId(dispatchId);
     e.setCreatedBy(user == null ? null : user.id());
     e.setClientId(r.clientId());

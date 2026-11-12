@@ -26,7 +26,7 @@ public class TransactionRepository {
                      CASE WHEN p.sale_id IS NULL THEN 'Payment on account' ELSE 'Paid at sale' END, p.method, p.received_by, p.dispatch_id
                 FROM payments p LEFT JOIN customers c ON c.id=p.customer_id
               UNION ALL
-              SELECT 'EXPENSE', e.id, e.created_at, e.amount, e.category, e.note, NULL, e.created_by, e.dispatch_id FROM expenses e
+              SELECT 'EXPENSE', e.id, e.created_at, e.amount, e.category, CASE WHEN e.employee IS NULL THEN e.note ELSE e.employee || COALESCE(' · ' || e.note, '') END, NULL, e.created_by, e.dispatch_id FROM expenses e
               UNION ALL
               SELECT 'PURCHASE', pu.id, pu.created_at, pu.total, 'Bought ' || pr.name, COALESCE(pu.supplier,''), NULL, NULL, NULL
                 FROM purchases pu JOIN products pr ON pr.id=pu.product_id

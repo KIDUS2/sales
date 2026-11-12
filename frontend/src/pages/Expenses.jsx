@@ -9,10 +9,11 @@ const TRIP_CATS = ['Fuel', 'Transport', 'Loading', 'Meals', 'Other']   // what a
 export default function Expenses() {
   const { report, delta, act, toast, t, isSales } = useStore()
   const CATS = isSales ? TRIP_CATS : ADMIN_CATS
-  const [cat, setCat] = useState('Fuel'), [amount, setAmount] = useState(''), [note, setNote] = useState('')
+  const [cat, setCat] = useState('Fuel'), [amount, setAmount] = useState(''), [note, setNote] = useState(''), [emp, setEmp] = useState('')
   async function save() {
     if (!(+amount > 0)) return toast('Enter an amount')
-    try { await act('/expenses', { clientId: uid(), category: cat, amount: +amount, note }); setAmount(''); setNote(''); toast('Expense saved') } catch (e) { toast(e.message) }
+    if (cat === 'Payroll' && !emp.trim()) return toast('Enter the employee name')
+    try { await act('/expenses', { clientId: uid(), category: cat, amount: +amount, note, employee: cat === 'Payroll' ? emp.trim() : null }); setAmount(''); setNote(''); setEmp(''); toast('Expense saved') } catch (e) { toast(e.message) }
   }
   const lines = report?.expenseList || []
   return (
@@ -21,6 +22,7 @@ export default function Expenses() {
         <h3>{isSales ? 'Record a trip expense' : 'Record an expense'}</h3>
         {isSales && <p className="muted sm">This is taken from the cash you hand over. Payroll and other business costs are recorded by the admin.</p>}
         <div className="chips">{CATS.map(c => <button key={c} className={'chip' + (cat === c ? ' on' : '')} onClick={() => setCat(c)}>{c}</button>)}</div>
+        {cat === 'Payroll' && <Field label="Employee name"><input value={emp} onChange={e => setEmp(e.target.value)} autoComplete="off" /></Field>}
         <Field label="Amount"><input type="number" min="0" value={amount} onChange={e => setAmount(e.target.value)} /></Field>
         <Field label="Note (optional)"><input value={note} onChange={e => setNote(e.target.value)} /></Field>
         <button className="btn primary block" onClick={save}>{t('Save expense')}</button>

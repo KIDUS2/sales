@@ -12,6 +12,7 @@ public class Expense {
   private String category;
   private BigDecimal amount;
   private String note;
+  private String employee;              // who was paid (payroll only)
   private Long dispatchId;
   private Long createdBy;
   private Instant createdAt = Instant.now();
