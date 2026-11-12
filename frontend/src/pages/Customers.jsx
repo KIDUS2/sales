@@ -4,7 +4,7 @@ import { useStore, uid } from '../store.jsx'
 import { br, daysSince, TYPES, METHODS } from '../util.js'
 import Modal, { Field } from '../components/Modal.jsx'
 
-const remind = c => `sms:${c.phone}?&body=${encodeURIComponent(`Hello ${c.name}, a friendly reminder from Egg Sales: you have Br ${c.balance} outstanding. Thank you for your support!`)}`
+const remind = c => `sms:${c.phone}?&body=${encodeURIComponent(`Hello ${c.name}, a friendly reminder from Laba: you have Br ${c.balance} outstanding. Thank you for your support!`)}`
 
 export default function Customers() {
   const { customers, act, create, toast, t } = useStore()

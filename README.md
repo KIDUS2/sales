@@ -1,4 +1,4 @@
-# Daily Sales App (Spring Boot + PostgreSQL + offline-ready UI)
+# Laba: daily sales app for an egg business (Spring Boot + PostgreSQL + offline-ready UI)
 
 ## Run
 1. Create the database:  `createdb salesdb`  (edit user/password in src/main/resources/application.yml)

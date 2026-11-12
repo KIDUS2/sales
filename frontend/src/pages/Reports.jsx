@@ -61,8 +61,8 @@ export default function Reports() {
 
   function exportCsv() {
     const t = r.totals
-    download(`egg-sales-${r.from}_to_${r.to}.csv`, [
-      ['Egg Sales report', r.from, r.to], [],
+    download(`laba-${r.from}_to_${r.to}.csv`, [
+      ['Laba report', r.from, r.to], [],
       ['Summary'], ['Net sales', t.netSales], ['Cost of eggs', t.cogs], ['Gross profit', t.grossProfit], ['Expenses', t.expenses], ['Net profit', t.netProfit], ['Cash received', t.cashReceived], ['Credit given', t.creditGiven], [],
       ['Day', 'Net sales', 'Cost of eggs', 'Expenses', 'Profit'], ...r.days.map(d => [d.date, d.netSales, d.cogs, d.expenses, d.profit]), [],
       ['Product', 'Eggs', 'Sold', 'Cost', 'Profit'], ...r.products.map(p => [p.name, p.qty, p.revenue, p.cost, p.profit]), [],
@@ -89,7 +89,7 @@ export default function Reports() {
       </div>}
       {!r ? <div className="card empty">{loading ? 'Loading report...' : 'No data.'}</div> : (
         <div className="printarea" style={{ opacity: loading ? .6 : 1 }}>
-          <h3 style={{ marginBottom: 10 }}>Egg Sales report · {r.from === r.to ? r.from : `${r.from} to ${r.to}`}</h3>
+          <h3 style={{ marginBottom: 10 }}>Laba report · {r.from === r.to ? r.from : `${r.from} to ${r.to}`}</h3>
           <div className="grid kpis" style={{ marginTop: 0 }}>
             {[['Net sales', br(t.netSales)], ['Gross profit', br(t.grossProfit), t.marginPct + '% margin'], ['Expenses', br(t.expenses)], ['Net profit', br(t.netProfit)],
               ['Sales made', t.salesCount, 'avg ' + br(t.avgSale)], ['Cash received', br(t.cashReceived)], ['Given on credit', br(t.creditGiven)], ['Paid to suppliers', br(t.supplierPaid)], ['Discounts', br(t.discounts)]].map(([k, v, s]) => (

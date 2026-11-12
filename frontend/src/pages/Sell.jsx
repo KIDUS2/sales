@@ -12,7 +12,7 @@ const FILTERS = [['all', 'All'], ['in', 'In stock'], ['low', 'Low'], ['out', 'Ou
 
 function receiptText(r) {
   const lines = r.lines.map(l => `${l.qty} x ${l.name} (${l.unit === 'TRAY' ? 'tray' : 'egg'}) @ ${l.price} = ${(l.qty * l.price).toFixed(2)}`)
-  return ['Egg Sales - Receipt #' + r.no, r.date.toLocaleString(), '', ...lines, '', 'Total: ' + br(r.total), 'Paid (' + r.method + '): ' + br(r.paid),
+  return ['Laba - Receipt #' + r.no, r.date.toLocaleString(), '', ...lines, '', 'Total: ' + br(r.total), 'Paid (' + r.method + '): ' + br(r.paid),
     ...(r.owing > 0 ? ['Still owing: ' + br(r.owing)] : []), '', 'Thank you for buying from us! አመሰግናለሁ'].join('\n')
 }
 
@@ -110,7 +110,7 @@ export default function Sell() {
         <Modal title="Sale complete" onClose={() => setReceipt(null)}>
           <div className="thanks"><div className="tick"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg></div><b style={{ marginTop: 10 }}>Thank you{receipt.customer ? ', ' + receipt.customer : ''}!</b><span className="muted">አመሰግናለሁ · We appreciate your business</span></div>
           <div className="receipt">
-            <b style={{ fontSize: 15 }}>EGG SALES · #{receipt.no}</b>
+            <b style={{ fontSize: 15 }}>LABA · #{receipt.no}</b>
             <span>{receipt.date.toLocaleString()}</span><hr />
             {receipt.lines.map((l, i) => <div className="row" key={i}><span>{l.qty} × {l.name} ({l.unit === 'TRAY' ? 'tray' : 'egg'}) @ {l.price}</span><span>{(l.qty * l.price).toFixed(2)}</span></div>)}<hr />
             <div className="row"><b>TOTAL</b><b>{br(receipt.total)}</b></div>

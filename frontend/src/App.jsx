@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { LayoutDashboard, ShoppingCart, Users, Package, Receipt, RefreshCw, Languages, Sun, Moon, BarChart3, UserCog } from 'lucide-react'
 import { useStore } from './store.jsx'
 import { ethDate } from './util.js'
+import Logo from './components/Logo.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import Sell from './pages/Sell.jsx'
 import Customers from './pages/Customers.jsx'
@@ -21,7 +22,7 @@ export default function App() {
   return (
     <div className="app">
       <aside className="side">
-        <div className="brand"><span className="egg" />Egg Sales</div>
+        <div className="brand"><Logo size={38} /><span className="wm"><b>Laba</b><small>ላባ · Egg sales</small></span></div>
         {PAGES.map(([name, Icon]) => (
           <button key={name} className={'nav' + (page === name ? ' on' : '')} onClick={() => setPage(name)}><Icon size={20} />{t(name)}</button>
         ))}
@@ -29,6 +30,7 @@ export default function App() {
       </aside>
       <div className="main">
         <header className="top">
+          <Logo size={34} className="top-logo" />
           <h1>{t(page)}<small>{ethDate()}</small></h1>
           <button className="pill" onClick={() => online ? sync() : setManual(false)} title="Send saved entries to the server">
             <RefreshCw size={15} /><span className="hide-s">{t('Sync')} </span>{queue.length > 0 && <span className="badge">{queue.length}</span>}
