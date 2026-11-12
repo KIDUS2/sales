@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+import { LayoutDashboard, ShoppingCart, Users, Package, Receipt, RefreshCw, Languages, Sun, Moon } from 'lucide-react'
 import { useStore } from './store.jsx'
 import { ethDate } from './util.js'
 import Dashboard from './pages/Dashboard.jsx'
@@ -10,6 +12,8 @@ const PAGES = [['Today', LayoutDashboard, Dashboard], ['Sell', ShoppingCart, Sel
 
 export default function App() {
   const [page, setPage] = useState('Today')
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'))
+  useEffect(() => { document.documentElement.dataset.theme = theme; localStorage.setItem('theme', theme) }, [theme])
   const { t, online, manual, setManual, queue, sync, lang, setLang, toastMsg } = useStore()
   const Page = PAGES.find(p => p[0] === page)[2]
   return (
@@ -30,6 +34,7 @@ export default function App() {
           <button className={'pill ' + (online ? 'on' : 'off')} onClick={() => setManual(m => !m)} title="Switch between online and offline mode">
             <span className="dot" style={{ background: 'currentColor', margin: 0 }} />{manual ? t('Offline') : online ? t('Online') : 'No connection'}
           </button>
+          <button className="pill" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label="Light or dark theme">{theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}</button>
           <button className="pill" onClick={() => setLang(lang === 'am' ? 'en' : 'am')} aria-label="Language"><Languages size={15} />{lang === 'am' ? 'EN' : 'አማ'}</button>
         </header>
         <main className="page"><Page go={setPage} /></main>

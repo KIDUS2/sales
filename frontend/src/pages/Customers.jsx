@@ -1,7 +1,10 @@
 import { useState } from 'react'
+import { Plus, Search, Phone, MessageSquare } from 'lucide-react'
 import { useStore, uid } from '../store.jsx'
 import { br, daysSince, TYPES, METHODS } from '../util.js'
 import Modal, { Field } from '../components/Modal.jsx'
+
+const remind = c => `sms:${c.phone}?&body=${encodeURIComponent(`Hello ${c.name}, a friendly reminder from Egg Sales: you have Br ${c.balance} outstanding. Thank you for your support!`)}`
 
 export default function Customers() {
   const { customers, act, create, toast, t } = useStore()
@@ -30,6 +33,7 @@ export default function Customers() {
               <td><b>{c.name}</b><div className="muted" style={{ fontSize: 12 }}>{c.phone}</div></td>
               <td className="muted">{TYPES[c.type]}</td>
               <td className="r">{c.balance > 0 ? <><span className="badge">owes {br(c.balance)}</span>{daysSince(c.oldestDebt) > 0 && <div className="muted" style={{ fontSize: 12 }}>{daysSince(c.oldestDebt)} days</div>}</> : <span className="badge ok">{c.balance < 0 ? 'advance ' + br(-c.balance) : 'clear'}</span>}</td>
+              <td className="r"><div className="acts"><button className="btn sm" onClick={() => { setPay(c); setAmount('') }}>{t('Receive payment')}</button>{c.phone && <a className="btn sm icon" href={`tel:${c.phone}`} aria-label="Call"><Phone size={15} /></a>}{c.phone && c.balance > 0 && <a className="btn sm icon" href={remind(c)} aria-label="Send reminder"><MessageSquare size={15} /></a>}</div></td>
             </tr>
           ))}
         </tbody></table> : <div className="empty">No customers found.</div>}

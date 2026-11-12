@@ -29,7 +29,6 @@ export default function Dashboard({ go }) {
         <small>{t('Net profit today')} · {t('after all expenses')}</small>
         <div className="big">{br(netA)}</div>
         <div className="quick"><button className="btn primary sm" onClick={() => go('Sell')}>{t('New sale')}</button><button className="btn glass sm" onClick={() => go('Customers')}>{t('Collect payment')}</button></div>
-        <div className="big">{br(net)}</div>
         <div className="bar"><i style={{ width: pc + '%', background: '#3ddba5' }} /><i style={{ width: 100 - pc + '%', background: 'var(--brand)' }} /></div>
         <div className="legend">
           <div><span className="dot" style={{ background: '#3ddba5' }} />{t('Cash received')}<b>{br(cash)}</b></div>
